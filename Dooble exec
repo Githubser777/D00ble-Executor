@@ -1,0 +1,237 @@
+-- Importation de HttpService
+local HttpService = game:GetService("HttpService")
+
+-- Création de l'interface utilisateur
+local D00bleExecGui = Instance.new("ScreenGui")
+local MainFrame = Instance.new("Frame")
+local WelcomeFrame = Instance.new("Frame")
+local WelcomeText = Instance.new("TextLabel")
+local HomeButton = Instance.new("TextButton")
+local DocumentButton = Instance.new("TextButton")
+local SearchButton = Instance.new("TextButton")
+local SearchPageFrame = Instance.new("Frame")
+local ScriptsHubText = Instance.new("TextLabel")
+local ScriptButton1 = Instance.new("TextButton")
+local ScriptButton2 = Instance.new("TextButton")
+local ScriptButton3 = Instance.new("TextButton")
+local ScriptFrame = Instance.new("Frame")
+local TextBoxContainer = Instance.new("Frame")
+local ScriptTextBox = Instance.new("TextBox")
+local ExecuteButton = Instance.new("TextButton")
+local BottomText = Instance.new("TextLabel")
+
+-- Propriétés de l'interface utilisateur
+D00bleExecGui.Name = "D00bleExecGui"
+D00bleExecGui.Parent = game.CoreGui
+D00bleExecGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+-- MainFrame
+MainFrame.Name = "MainFrame"
+MainFrame.Parent = D00bleExecGui
+MainFrame.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2) -- Gris foncé
+MainFrame.BorderColor3 = Color3.new(1, 0, 0) -- Rouge
+MainFrame.BorderSizePixel = 5
+MainFrame.Position = UDim2.new(0.15, 0, 0.15, 0)
+MainFrame.Size = UDim2.new(0.7, 0, 0.7, 0)
+MainFrame.Active = true
+MainFrame.Draggable = true -- Rend le GUI déplaçable
+
+-- Page d'accueil (WelcomeFrame)
+WelcomeFrame.Name = "WelcomeFrame"
+WelcomeFrame.Parent = MainFrame
+WelcomeFrame.Size = UDim2.new(1, 0, 1, 0)
+WelcomeFrame.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2) -- Gris foncé
+
+WelcomeText.Name = "WelcomeText"
+WelcomeText.Parent = WelcomeFrame
+WelcomeText.BackgroundTransparency = 1
+WelcomeText.Size = UDim2.new(1, 0, 0.8, 0)
+WelcomeText.Position = UDim2.new(0, 0, 0.1, 0)
+WelcomeText.Font = Enum.Font.Gotham
+WelcomeText.Text = "WELCOME: Thank you for using our D00ble executor"
+WelcomeText.TextColor3 = Color3.new(1, 1, 1)
+WelcomeText.TextSize = 18
+WelcomeText.TextWrapped = true
+
+-- Boutons
+HomeButton.Name = "HomeButton"
+HomeButton.Parent = MainFrame
+HomeButton.BackgroundColor3 = Color3.new(0, 0, 0) -- Noir
+HomeButton.BorderColor3 = Color3.new(1, 0, 0) -- Rouge
+HomeButton.BorderSizePixel = 5
+HomeButton.Position = UDim2.new(0, 0, 0, 0)
+HomeButton.Size = UDim2.new(0.1, 0, 0.1, 0)
+HomeButton.Font = Enum.Font.Gotham
+HomeButton.Text = "🏠"
+HomeButton.TextColor3 = Color3.new(1, 1, 1)
+HomeButton.TextSize = 24
+
+DocumentButton.Name = "DocumentButton"
+DocumentButton.Parent = MainFrame
+DocumentButton.BackgroundColor3 = Color3.new(0, 0, 0) -- Noir
+DocumentButton.BorderColor3 = Color3.new(1, 0, 0) -- Rouge
+DocumentButton.BorderSizePixel = 5
+DocumentButton.Position = UDim2.new(0, 0, 0.1, 0)
+DocumentButton.Size = UDim2.new(0.1, 0, 0.1, 0)
+DocumentButton.Font = Enum.Font.Gotham
+DocumentButton.Text = "📜"
+DocumentButton.TextColor3 = Color3.new(1, 1, 1)
+DocumentButton.TextSize = 24
+
+SearchButton.Name = "SearchButton"
+SearchButton.Parent = MainFrame
+SearchButton.BackgroundColor3 = Color3.new(0, 0, 0) -- Noir
+SearchButton.BorderColor3 = Color3.new(1, 0, 0) -- Rouge
+SearchButton.BorderSizePixel = 5
+SearchButton.Position = UDim2.new(0, 0, 0.2, 0)
+SearchButton.Size = UDim2.new(0.1, 0, 0.1, 0)
+SearchButton.Font = Enum.Font.Gotham
+SearchButton.Text = "🔎"
+SearchButton.TextColor3 = Color3.new(1, 1, 1)
+SearchButton.TextSize = 24
+
+-- Page de recherche (SearchPageFrame)
+SearchPageFrame.Name = "SearchPageFrame"
+SearchPageFrame.Parent = MainFrame
+SearchPageFrame.Size = UDim2.new(1, 0, 1, 0)
+SearchPageFrame.BackgroundTransparency = 1
+SearchPageFrame.Visible = false
+
+-- Titre "Scripts Hub" en haut de la page de recherche
+ScriptsHubText.Name = "ScriptsHubText"
+ScriptsHubText.Parent = SearchPageFrame
+ScriptsHubText.BackgroundTransparency = 1
+ScriptsHubText.Size = UDim2.new(1, 0, 0.1, 0)
+ScriptsHubText.Font = Enum.Font.Gotham
+ScriptsHubText.Text = "Scripts Hub"
+ScriptsHubText.TextColor3 = Color3.new(1, 1, 1)
+ScriptsHubText.TextSize = 18
+ScriptsHubText.TextWrapped = true
+
+-- Boutons de script sur la page de recherche
+local function createScriptButton(name, position, script)
+    local button = Instance.new("TextButton")
+    button.Name = name
+    button.Parent = SearchPageFrame
+    button.BackgroundColor3 = Color3.new(0, 0, 0) -- Noir
+    button.BorderColor3 = Color3.new(1, 0, 0) -- Rouge
+    button.BorderSizePixel = 5
+    button.Size = UDim2.new(0.8, 0, 0.1, 0)
+    button.Position = position
+    button.Font = Enum.Font.Gotham
+    button.Text = name
+    button.TextColor3 = Color3.new(1, 1, 1)
+    button.TextSize = 14
+    
+    button.MouseButton1Click:Connect(function()
+        ScriptTextBox.Text = script
+        showScriptPage()
+    end)
+    
+    return button
+end
+
+-- Créer les boutons de script
+createScriptButton("Ghost Hub", UDim2.new(0.1, 0, 0.3, 0), [[
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/GhostPlayer352/Test4/main/GhostHub'))()
+]])
+createScriptButton("Fly v3", UDim2.new(0.1, 0, 0.45, 0), [[
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.txt"))()
+]])
+createScriptButton("IY", UDim2.new(0.1, 0, 0.6, 0), [[
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
+]])
+
+-- ScriptFrame (page d'exécution du script)
+ScriptFrame.Name = "ScriptFrame"
+ScriptFrame.Parent = MainFrame
+ScriptFrame.Size = UDim2.new(1, 0, 1, 0)
+ScriptFrame.BackgroundTransparency = 1
+ScriptFrame.Visible = false
+
+TextBoxContainer.Name = "TextBoxContainer"
+TextBoxContainer.Parent = ScriptFrame
+TextBoxContainer.BackgroundColor3 = Color3.new(0.5, 0.5, 0.5) -- Gris
+TextBoxContainer.BorderColor3 = Color3.new(1, 0, 0) -- Rouge
+TextBoxContainer.BorderSizePixel = 5
+TextBoxContainer.Position = UDim2.new(0.1, 0, 0.2, 0)
+TextBoxContainer.Size = UDim2.new(0.8, 0, 0.5, 0)
+
+ScriptTextBox.Name = "ScriptTextBox"
+ScriptTextBox.Parent = TextBoxContainer
+ScriptTextBox.BackgroundColor3 = Color3.new(1, 1, 1)
+ScriptTextBox.BackgroundTransparency = 0.5
+ScriptTextBox.Position = UDim2.new(0, 5, 0, 5)
+ScriptTextBox.Size = UDim2.new(1, -10, 1, -10)
+ScriptTextBox.Font = Enum.Font.Code
+ScriptTextBox.MultiLine = true
+ScriptTextBox.PlaceholderText = "--Require executor script here--"
+ScriptTextBox.TextColor3 = Color3.new(0, 0, 0)
+ScriptTextBox.TextSize = 14
+ScriptTextBox.TextWrapped = true
+ScriptTextBox.TextXAlignment = Enum.TextXAlignment.Left
+
+ExecuteButton.Name = "ExecuteButton"
+ExecuteButton.Parent = ScriptFrame
+ExecuteButton.BackgroundColor3 = Color3.new(0, 0, 0)
+ExecuteButton.BorderColor3 = Color3.new(1, 0, 0)
+ExecuteButton.BorderSizePixel = 5
+ExecuteButton.Position = UDim2.new(0.1, 0, 0.8, 0)
+ExecuteButton.Size = UDim2.new(0.2, 0, 0.1, 0)
+ExecuteButton.Font = Enum.Font.Gotham
+ExecuteButton.Text = "Exe"
+ExecuteButton.TextColor3 = Color3.new(1, 1, 1)
+ExecuteButton.TextSize = 14
+
+BottomText.Name = "BottomText"
+BottomText.Parent = ScriptFrame
+BottomText.BackgroundTransparency = 1
+BottomText.Position = UDim2.new(0.7, 0, 0.9, 0)
+BottomText.Size = UDim2.new(0.3, 0, 0.1, 0)
+BottomText.Font = Enum.Font.Gotham
+BottomText.Text = "By D00bleHaxx"
+BottomText.TextColor3 = Color3.new(1, 1, 1)
+BottomText.TextSize = 14
+BottomText.TextWrapped = true
+BottomText.TextXAlignment = Enum.TextXAlignment.Right
+BottomText.TextYAlignment = Enum.TextYAlignment.Bottom
+
+-- Fonction de navigation entre les pages
+local function showWelcomePage()
+    WelcomeFrame.Visible = true
+    ScriptFrame.Visible = false
+    SearchPageFrame.Visible = false
+end
+
+local function showScriptPage()
+    WelcomeFrame.Visible = false
+    ScriptFrame.Visible = true
+    SearchPageFrame.Visible = false
+end
+
+local function showSearchPage()
+    WelcomeFrame.Visible = false
+    ScriptFrame.Visible = false
+    SearchPageFrame.Visible = true
+end
+
+-- Gestionnaires d'événements pour les boutons de navigation
+HomeButton.MouseButton1Click:Connect(showWelcomePage)
+DocumentButton.MouseButton1Click:Connect(showScriptPage)
+SearchButton.MouseButton1Click:Connect(showSearchPage)
+
+-- Gestionnaire d'événements pour l'exécution du script
+ExecuteButton.MouseButton1Click:Connect(function()
+    local scriptToExecute = ScriptTextBox.Text
+    if scriptToExecute ~= "" then
+        local success, errorMessage = pcall(function()
+            loadstring(scriptToExecute)()
+        end)
+        if not success then
+            warn("Erreur d'exécution du script: " .. errorMessage)
+        end
+    end
+end)
+
+-- Initialement, affiche la page d'accueil
+showWelcomePage()
